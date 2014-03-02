@@ -1,4 +1,4 @@
-var baseURI = "http://localhost:8080/wslab03";
+var baseURI = "http://localhost:8080/aswlab03";
 var wallURI = baseURI+"/wall";
 var thisURI = baseURI+"/index.html";
 var req;
