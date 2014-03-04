@@ -1,6 +1,6 @@
 var baseURI = "http://localhost:8080/aswlab03";
-var wallURI = baseURI+"/wall";
-var thisURI = baseURI+"/index.html";
+var tweetsURI = baseURI+"/tweets";
+
 var req;
 var tweetBlock = "	<div id='tweet_{0}' class='wallitem'>\n\
 	<div class='likes'>\n\
@@ -29,7 +29,9 @@ String.prototype.format = function() {
 
 function likeHandler(tweetID) {
 	var target = 'tweet_' + tweetID;
-	var uri = wallURI+ "/like/" + tweetID;
+	var uri = tweetsURI+ "/" + tweetID +"/like";
+	// e.g. to like tweet #6 we call http://localhost:8080/aswlab03/tweets/6/like
+	
 	req = new XMLHttpRequest();
 	req.open('GET', uri, /*async*/true);
 	req.onreadystatechange = function() {
@@ -57,7 +59,7 @@ function getTweetHTML(tweet, action) {  // action :== "like" xor "delete"
 
 function getTweets() {
 	req = new XMLHttpRequest(); 
-	req.open("GET", wallURI, true); 
+	req.open("GET", tweetsURI, true); 
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {
 			var tweet_list = req.responseText;

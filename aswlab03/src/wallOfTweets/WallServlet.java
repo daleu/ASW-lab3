@@ -17,16 +17,18 @@ import com.google.appengine.repackaged.org.json.JSONObject;
 @SuppressWarnings("serial")
 public class WallServlet extends HttpServlet {
 	
+	private String TWEETS_URI = "/aswlab03/tweets/";
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
 		String uri = req.getRequestURI();
-		String liked = uri.replaceFirst("/wslab03/wall/like/","");
-		if (!uri.equals(liked)) {  // liked == id of the tweet to be liked
+		int lastIndex = uri.lastIndexOf("/like");
+		if (lastIndex > -1) {  // uri ends with "/like"
+			long liked = Long.valueOf(uri.substring(TWEETS_URI.length(),lastIndex));		
 			resp.setContentType("text/plain");
-			resp.getWriter().println(Database.likeTweet(Long.valueOf(liked)));
+			resp.getWriter().println(Database.likeTweet(liked));
 		}
 		else {
 			resp.setContentType("application/json");

@@ -16,11 +16,11 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>woTServlet</servlet-name>
-    <url-pattern>/wall</url-pattern>
+    <url-pattern>/tweets</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>woTServlet</servlet-name>
-    <url-pattern>/wall/*</url-pattern>
+    <url-pattern>/tweets/*</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
