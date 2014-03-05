@@ -29,11 +29,11 @@ String.prototype.format = function() {
 
 function likeHandler(tweetID) {
 	var target = 'tweet_' + tweetID;
-	var uri = tweetsURI+ "/" + tweetID +"/like";
+	var uri = tweetsURI+ "/" + tweetID +"/likes";
 	// e.g. to like tweet #6 we call http://localhost:8080/aswlab03/tweets/6/like
 	
 	req = new XMLHttpRequest();
-	req.open('GET', uri, /*async*/true);
+	req.open('POST', uri, /*async*/true);
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {
 			document.getElementById(target).getElementsByClassName("numlikes")[0].innerHTML = req.responseText;
