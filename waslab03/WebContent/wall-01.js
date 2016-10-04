@@ -53,7 +53,6 @@ function deleteHandler(tweetID) {
 function getTweetHTML(tweet, action) {  // action :== "like" xor "delete"
 	var dat = new Date(tweet.date);
 	var dd = dat.toDateString()+" @ "+dat.toLocaleTimeString();
-	console.log(tweetBlock.format(tweet.id, tweet.likes, tweet.author, tweet.text, dd, action));
 	return tweetBlock.format(tweet.id, tweet.likes, tweet.author, tweet.text, dd, action);
 	
 }
@@ -65,7 +64,6 @@ function getTweets() {
 		if (req.readyState == 4 && req.status == 200) {
 			var tweet_list = req.responseText;
 			tweet_list = JSON.parse(tweet_list);
-			console.log(tweet_list);
 			var HTMLtweets = "";
 			for (var i=0; i<tweet_list.length; ++i) {
 				HTMLtweets = HTMLtweets + getTweetHTML(tweet_list[i],"like");
@@ -83,8 +81,21 @@ function tweetHandler() {
 	/*
 * TASK #3 -->
 				*/
-	var mes1 = "Someone ({0}) wants to insert a new tweet ('{1}'),\n but this feature is not implemented yet!";
-	alert(mes1.format(author, text));
+	
+	req = new XMLHttpRequest();
+	req.open('POST', tweetsURI, /*async*/true);
+	req.setRequestHeader("Content-Type","application/json");
+	req.onreadystatechange = function() {
+		if (req.readyState == 4 && req.status == 200) {
+			var nt = JSON.parse(req.responseText);
+			var nt2 = getTweetHTML(nt, "delete");
+			document.getElementById("tweet_list").innerHTML = nt2 + document.getElementById("tweet_list").innerHTML;
+		}
+	};
+	req.send(JSON.stringify({author:author, text:text}));
+	
+//	var mes1 = "Someone ({0}) wants to insert a new tweet ('{1}'),\n but this feature is not implemented yet!";
+//	alert(mes1.format(author, text));
 	
 	// clear form fields
 	document.getElementById("tweet_author").value = "";
