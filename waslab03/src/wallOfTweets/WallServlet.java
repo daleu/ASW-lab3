@@ -1,6 +1,9 @@
 package wallOfTweets;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -68,8 +71,16 @@ public class WallServlet extends HttpServlet {
 				Tweet newTweet = Database.insertTweet(author, text);
 				
 				JSONObject newJSONTweet = new JSONObject(newTweet);
+				
+				MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+				messageDigest.update(newTweet.getId().byteValue());
+				byte[] sum = messageDigest.digest();
+				BigInteger bigInteger = new BigInteger(1,sum);
+				String hash = bigInteger.toString(64);
+				
+				newJSONTweet.accumulate("token", hash);
 				resp.getWriter().println(newJSONTweet.toString());
-			} catch (JSONException e) {
+			} catch (JSONException | NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
