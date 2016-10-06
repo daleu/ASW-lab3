@@ -94,10 +94,27 @@ public class WallServlet extends HttpServlet {
 			throws IOException, ServletException {
 
 		String uri = req.getRequestURI();
-		int last_index = uri.lastIndexOf("/");
+		int last_index = uri.indexOf("tweets/");
+		int last_index2 = uri.lastIndexOf("/");
 			
-		long idTweet = Long.valueOf(uri.substring(last_index+1,uri.length()));
-		Database.deleteTweet(idTweet);
+		Long idTweet = Long.parseLong(uri.substring(last_index+7,last_index2));
+		String hash = uri.substring(last_index2+1,uri.length());
+		
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("MD5");
+			messageDigest.update(idTweet.byteValue());
+			byte[] sum = messageDigest.digest();
+			BigInteger bigInteger = new BigInteger(1,sum);
+			String hash2 = bigInteger.toString(64);
+			
+			if (hash2.equals(hash)) {
+				Database.deleteTweet(idTweet);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -41,16 +41,17 @@ function likeHandler(tweetID) {
 }
 
 function deleteHandler(tweetID) {
-	var uri = tweetsURI + "/" + tweetID;
+	var uri = tweetsURI + "/" + tweetID + "/" + localStorage.getItem(tweetID);
 	req = new XMLHttpRequest();
-	req.open('DELETE', uri, /* async */true);
+	req.open('DELETE', uri, true);
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {
 			document.getElementById("tweet_" + tweetID).parentNode
 					.removeChild(document.getElementById("tweet_" + tweetID));
+			localStorage.removeItem(tweetID);
 		}
 	};
-	req.send(/* no params */null);
+	req.send(null);
 }
 
 function getTweetHTML(tweet, action) { // action :== "like" xor "delete"
